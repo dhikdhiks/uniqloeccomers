@@ -194,9 +194,9 @@
     var retina = window.devicePixelRatio > 1 ? true : false;
       if(retina) {
         if ($(".dark-theme").length > 0) {
-          $('#logo_header').attr({src:'/assets/images/logo/gg.png',width:'52px',height:'52px'});
+          $('products_header').attr({src:'/assets/images/logo/gg.png',width:'20px',height:'20px'});
         } else {
-          $('#logo_header').attr({src:'/assets/images/logo/gg.png',width:'52px',height:'52px'});
+          $('#logo_header').attr({src:'/assets/images/logo/gg.png',width:'20px',height:'20px'});
         }
       }
   };

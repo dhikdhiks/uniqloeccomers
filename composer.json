@@ -7,11 +7,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "intervention/image-laravel": "^1.2",
         "laravel/framework": "^11.31",
-        "intervention/image-laravel":"^1.2",
         "laravel/socialite": "^5.19",
         "laravel/tinker": "^2.9",
-        "laravel/ui": "^4.6"
+        "laravel/ui": "^4.6",
+        "surfsidemedia/shoppingcart": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('brands', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('size')->nullable()->after('quantity');
         });
     }
 
     public function down()
     {
-        Schema::table('brands', function (Blueprint $table) {
-            $table->dropSoftDeletes();
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('size');
         });
     }
 

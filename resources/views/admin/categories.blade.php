@@ -32,7 +32,7 @@
                         </div>
                     </form>
                 </div>
-                <a class="tf-button style-1 w208" href="#"><i
+                <a class="tf-button style-1 w208" href="{{route ('admin.category.add')}}"><i
                         class="icon-plus"></i>Add new</a>
             </div>
             <div class="wg-table table-all-user">
@@ -72,15 +72,13 @@
                                             </div>
                                         </a>
                                             <!-- Tombol Delete -->
-                                            <form action="#" method="POST" style="display:inline;" onsubmit="confirmDelete(event)">
+                                            <form action="{{ route('admin.category.delete', ['id' => $category->id]) }}" method="POST" style="display:inline;" onsubmit="confirmDelete(event)">
                                                 @csrf
+                                                @method('DELETE')
                                                 <button type="submit" class="item text-danger delete" style="background: none; border: none; padding: 0;">
                                                     <i class="icon-trash-2"></i>
                                                 </button>
                                             </form>
-
-
-
                                     </div>
 
                                 </td>
@@ -99,14 +97,10 @@
     </div>
 </div>
 @push('scripts')
-<!-- Tambahkan ini dulu -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Lalu fungsi confirmDelete -->
 <script>
     function confirmDelete(event) {
-        event.preventDefault(); // Tahan submit form
-
+        event.preventDefault();
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",

@@ -10,7 +10,7 @@
         "effect": "fade",
         "loop": true
       }'>
-      <div class="swiper-wrapper">
+      <div class="swiper-wrapper pt-4 mt-4">
         <div class="swiper-slide">
           <div class="overflow-hidden position-relative h-100">
             <div class="slideshow-character position-absolute bottom-0 pos_right-center">

@@ -74,13 +74,11 @@
                                             <!-- Tombol Delete -->
                                             <form action="{{ route('admin.brand.delete', ['id' => $brand->id]) }}" method="POST" style="display:inline;" onsubmit="confirmDelete(event)">
                                                 @csrf
+                                                @method('DELETE')
                                                 <button type="submit" class="item text-danger delete" style="background: none; border: none; padding: 0;">
                                                     <i class="icon-trash-2"></i>
                                                 </button>
                                             </form>
-
-
-
                                     </div>
 
                                 </td>
@@ -99,13 +97,10 @@
     </div>
 </div>
 @push('scripts')
-<!-- Tambahkan ini dulu -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Lalu fungsi confirmDelete -->
 <script>
     function confirmDelete(event) {
-        event.preventDefault(); // Tahan submit form
+        event.preventDefault();
 
         Swal.fire({
             title: 'Are you sure?',

@@ -74,56 +74,9 @@
     </div>
 </div>
 @endsection
-{{-- @push('scripts')
-<script>
-$(function(){
-    // Saat file gambar dipilih
-    $("#myFile").on("change", function(e){
-        const [file] = this.files;
-        if (file) {
-            $("#imgpreview img").attr('src', URL.createObjectURL(file));
-            $("#imgpreview").show();
-        }
-    });
-
-    // Saat nama brand diketik
-    $("input[name='name']").on("change", function(){
-        $("input[name='slug']").val(StringToSlug($(this).val()));
-    });
-
-    // Fungsi untuk convert nama jadi slug
-    function StringToSlug(Text){
-        return Text.replace(/[^\w ]+/g, '')
-                   .replace(/ +/g, '-')
-                   .toLowerCase();
-    }
-});
-</script>
-@endpush --}}
-
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    $(function() {
-        $("#myFile").on("change", function(e) {
-            const photoInp = $("#myFile");
-            const [file] = this.files;
-            if (file) {
-                $("#imgpreview img").attr('src', URL.createObjectURL(file));
-                $("#imgpreview").show();
-            }
-        });
-
-        $("input[name='name']").on("change", function() {
-            $("input[name='slug']").val(StringToSlug($(this).val()));
-        });
-    });
-
-    function StringToSlug(Text) {
-        return Text.toLowerCase()
-            .replace(/[^\w ]+/g, "")
-            .replace(/ +/g, "-");
-    }
     // function confirmSave() {
     //     return confirm("Are you sure you want to save this brand?");
     // }

@@ -5,6 +5,7 @@ var $ = jQuery.noConflict();
 let UomoSections = {};
 let UomoElements = {};
 
+//masalah
 let UomoSelectors = {
   pageBackDropActiveClass: 'page-overlay_visible',
   quantityControl: '.qty-control',
@@ -969,7 +970,7 @@ function pureFadeOut(e) {
       $('.product-single__thumbnail .swiper-slide').css({height:'auto'});
           var currentSlide = that.activeIndex;
           var newHeight = $(that.slides[currentSlide]).height();
-  
+
           $('.product-single__thumbnail .swiper-wrapper, .product-single__thumbnail .swiper-slide').css({ height : newHeight })
           that.update();
      }
@@ -1111,14 +1112,14 @@ function pureFadeOut(e) {
             }
           })
         })
-      
+
         // Mouseover event
         star.addEventListener('mouseleave', (e) => {
           stars.forEach((item) => {
             item.classList.remove('is-overed');
           })
         })
-      
+
         // Click event
         star.addEventListener('click', (e) => {
           const selected_index = stars.indexOf(e.target);
@@ -1393,7 +1394,7 @@ function pureFadeOut(e) {
       });
 
       const btn_player = $(this);
-  
+
       $($(this).data("video")).off("ended").on("ended", function() {
         $(btn_player).removeClass("playing");
         this.currentTime = 0;
