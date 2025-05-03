@@ -16,6 +16,8 @@ class ShopController extends Controller
         $order = $request->query('order') ? $request->query('order') : -1;
         $f_brands = $request->query('brands');
         $f_categories = $request->query('categories');
+        $min_price = $request->query('min') ? $request->query('min') : 1;
+        $max_price = $request->query('max') ? $request->query('max') : 500;
 
         switch($order){
             case 1:
@@ -46,15 +48,20 @@ class ShopController extends Controller
             ->where(function($query) use($f_categories ) {
                 $query->whereIn('category_id', explode(',', $f_categories ))->orWhereRaw("'".$f_categories ."'=''");
             })
+            ->where(function($query) use($min_price,$max_price){
+                $query->whereBetween('regular_price',[$min_price,$max_price])
+                ->orWhereBetween('sale_price',[$min_price,$max_price]);
+            })
+            
                             ->orderBy($o_column, $o_order)->paginate($size);
-            return view('shop', compact('products', 'size', 'order', 'brands', 'f_brands', 'categories', 'f_categories'));
+            return view('shop', compact('products', 'size', 'order', 'brands', 'f_brands', 'categories', 'f_categories', 'min_price', 'max_price'));
         }
 
 
     public function product_details($products_slug){
         $product = Product::where('slug', $products_slug)->first();
         $rproducts = Product::where('slug','<>',$products_slug)->get()->take(8);
-        return view('details', compact('product', 'rproducts', 'order'));
+        return view('details', compact('product', 'rproducts'));
     }
 
 }

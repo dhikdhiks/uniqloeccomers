@@ -1,0 +1,7 @@
+Name,Age,Gender,Cabin,Embarked
+John Smith,34.0,Male,A12,S
+Anna Johnson,,Female,B25,C
+Michael Brown,45.0,Male,,Q
+Sarah Davis,28.0,Female,C10,
+,50.0,Male,D15,S
+Emily Wilson,19.0,Female,,C
