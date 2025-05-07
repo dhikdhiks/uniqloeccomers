@@ -68,8 +68,9 @@
                                     <div class="text-tiny mt-3">{{$product->slug}}</div>
                                 </div>
                             </td>
-                            <td>IDR {{ number_format($product->regular_price, 0, ',', '.') }}</td>
-                            <td>IDR {{ number_format($product->sale_price, 0, ',', '.') }}</td>
+                            <!-- IDR -->
+                            <td>$ {{ number_format($product->regular_price, 0, ',', '.') }}</td>
+                            <td>$ {{ number_format($product->sale_price, 0, ',', '.') }}</td>
                             <td>{{$product->SKU}}</td>
                             <td>{{$product->category->name}}</td>
                             <td>{{$product->brand->name}}</td>

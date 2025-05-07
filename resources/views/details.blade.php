@@ -102,10 +102,11 @@
           <div class="product-single__price">
             <span class="current-price">
                 @if ($product->sale_price)
-                <s>IDR{{ number_format($product->regular_price, 0, ',', '.') }}</s>
-                IDR{{ number_format($product->sale_price, 0, ',', '.') }}
+                <!-- IDR -->
+                <s>${{ number_format($product->regular_price, 0, ',', '.') }}</s>
+                ${{ number_format($product->sale_price, 0, ',', '.') }}
                 @else
-                IDR{{ number_format($product->regular_price, 0, ',', '.') }}
+                ${{ number_format($product->regular_price, 0, ',', '.') }}
             @endif</span>
           </div>
           <div class="product-single__short-desc">
@@ -134,25 +135,32 @@
 
 
           <div class="product-single__addtolinks">
-          @if(Cart::instance('wishlist')->content()->count() > 0)
-            <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist filled-heart"><svg width="16" height="16" viewBox="0 0 20 20"
-                fill="none" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_heart" />
-              </svg><span>Remove from Wishlist</span></a>
-          @else
-          <form method="POST" action="{{route('wishlist.add')}}" id="wishlist-form">
-                  @csrf
-                  <input type="hidden" name="id" value="{{$product->id}}" />
-                  <input type="hidden" name="name" value="{{$product->name}}" />
-                  <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price : $product->sale_price }}" />
-                  <input type="hidden" name="quantity" value="1" />
-            <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist" onclick="document.getElementById('wishlist-form').submit()"><svg width="16" height="16" viewBox="0 0 20 20"
-                fill="none" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_heart" />
-              </svg><span>Add to Wishlist</span></a>
-
-          </form>
-          @endif
+          @if(Cart::instance('wishlist')->content()->where('id', $product->id)->count() > 0)
+<form method="POST" action="{{route('wishlist.remove',['rowId'=>Cart::instance('wishlist')->content()->where('id', $product->id)->first()->rowId])}}" id="frm-remove-item">
+    @csrf
+    @method('DELETE')
+    <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist filled-heart" onclick="document.getElementById('frm-remove-item').submit();">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <use href="#icon_heart" />
+        </svg>
+        <span>Remove from wishlist</span>
+    </a>
+</form>
+@else
+<form method="POST" action="{{route('wishlist.add')}}" id="wishlist-form">
+    @csrf
+    <input type="hidden" name="id" value="{{$product->id}}" />
+    <input type="hidden" name="name" value="{{$product->name}}" />
+    <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price : $product->sale_price }}" />
+    <input type="hidden" name="quantity" value="1" />
+    <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist" onclick="document.getElementById('wishlist-form').submit();">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <use href="#icon_heart" />
+        </svg>
+        <span>Add to wishlist</span>
+    </a>
+</form>
+@endif
 
 
             <share-button class="share-button">
