@@ -59,7 +59,7 @@ class CartController extends Controller
             {
                 return redirect()->back()->with('error', 'Invalid coupon code bodoh!');
             }
-            else{
+            
                 Session::put('coupon',[
                     'code' => $coupon->code,
                     'type' => $coupon->type,
@@ -68,9 +68,7 @@ class CartController extends Controller
                 ]);
                 $this->calculateDiscount();
                 return redirect()->back()->with('success', 'Coupon has been applied!');
-            }
-        }
-        else{
+        }else{
             return redirect()->back()->with('error', 'Invalid coupon code!');
         }
     }
@@ -206,7 +204,7 @@ class CartController extends Controller
         Session::forget('checkout');
         Session::forget('coupon');
         Session::forget('discounts');
-        Session::put('order_id, $order->id');
+        Session::put('order_id', $order->id);
         return redirect()->route('cart.order.confirmation', compact('order'));
     }
 

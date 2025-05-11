@@ -52,7 +52,7 @@
             <span>${{$order->total}}</span>
           </div>
           <div class="order-info__item">
-            <label>Paymetn Method</label>
+            <label>Payment Method</label>
             <span>{{$order->transaction->mode}}</span>
           </div>
         </div>
@@ -70,10 +70,10 @@
                 @foreach($order->orderItems as $item)
                 <tr>
                   <td>
-                  {{$item->product->name}} x {{$item->qty}}
+                  {{$item->product->name}} x {{$item->quantity}}
                   </td>
-                  <td>
-                    ${{$item->price}}
+                  <td class="text-right">
+                    ${{ $item->price * $item->quantity }}
                   </td>
                 </tr>
                 @endforeach
@@ -82,24 +82,26 @@
             <table class="checkout-totals">
               <tbody>
                 <tr>
-                  <th>SUBTOTAL</th>
-                  <td>${{$order->subtotal}}</td>
-                </tr>
-                <tr>
                   <th>DISCOUNT</th>
-                  <td>${{$order->discount}}</td>
+                  <td class="text-right">${{$order->discount}}</td>
                 </tr>
+                @foreach($order->orderItems as $item)
+                <tr>
+                  <th>SUBTOTAL</th>
+                  <td class="text-right">${{$item->price * $item->quantity - $order->discount}}</td>
+                </tr>
+                @endforeach
                 <tr>
                   <th>SHIPPING</th>
-                  <td>Free shipping</td>
+                  <td class="text-right">Free shipping</td>
                 </tr>
                 <tr>
                   <th>VAT</th>
-                  <td>${{$order->tax}}</td>
+                  <td class="text-right">${{$order->tax}}</td>
                 </tr>
                 <tr>
                   <th>TOTAL</th>
-                  <td>${{$item->total}}</td>
+                  <td class="text-right">${{$order->total}}</td>
                 </tr>
               </tbody>
             </table>
