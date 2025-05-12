@@ -4,9 +4,6 @@
     .brand-list li, .category-list li{
         line-height: 40px;
     }
-    .filled-heart{
-      color: orange;
-    }
 </style>
 <main class="pt-90">
     <section class="shop-main container d-flex pt-5 mt-5">
@@ -154,40 +151,57 @@
             </div>
           </div>
         </div>
+            <!-- Price -->
 
-
-        <div class="accordion" id="price-filters">
-          <div class="accordion-item mb-4">
-            <h5 class="accordion-header mb-2" id="accordion-heading-price">
-              <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
-                data-bs-target="#accordion-filter-price" aria-expanded="true" aria-controls="accordion-filter-price">
-                Price
-                <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
-                  <g aria-hidden="true" stroke="none" fill-rule="evenodd">
-                    <path
-                      d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
-                  </g>
-                </svg>
-              </button>
-            </h5>
-            <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
+            <div class="accordion" id="price-filters">
+                <div class="accordion-item mb-4">
+                  <h5 class="accordion-header mb-2" id="accordion-heading-price">
+                    <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#accordion-filter-price" aria-expanded="true" aria-controls="accordion-filter-price">
+                      Price
+                      <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                        <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                          <path
+                            d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                        </g>
+                      </svg>
+                    </button>
+                  </h5>
+                           <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
               aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
-              <input class="price-range-slider" type="text" name="price_range" value="" data-slider-min="1"
-                data-slider-max="500" data-slider-step="5" data-slider-value="[{{$min_price}}, {{$max_price}}]" data-currency="$" />
-              <div class="price-range__info d-flex align-items-center mt-2">
-                <div class="me-auto">
-                  <span class="text-secondary">Min Price: </span>
-                  <span class="price-range__min">$1</span>
+              <input class="price-range-slider" type="text" name="price_range" value=""
+                            data-slider-min="50000" data-slider-max="1500000" data-slider-step="5000"
+                            data-slider-value="[{{ $min_price }},{{ $max_price }}]" data-currency="IDR"/>
+                        <div class="price-range__info d-flex align-items-center mt-2">
+                            <div class="me-auto">
+                                <span class="text-secondary">Min Price: </span>
+                                <span class="price-range__min">IDR {{ number_format($min_price, 0, ',', '.') }}</span>
+                            </div>
+                            <div>
+                                <span class="text-secondary">Max Price: </span>
+                                <span class="price-range__max">IDR {{ number_format($max_price, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                  <span class="text-secondary">Max Price: </span>
-                  <span class="price-range__max">$500</span>
+            </div>
+            {{-- manual input --}}
+            <div class="row mt-3">
+                <div class="col">
+                  <label for="input-min-price" class="form-label">Input Min Price</label>
+                  <input type="number" class="form-control" id="input-min-price" min="50000" max="1500000" step="5000" value="{{ $min_price }}">
+                </div>
+                <div class="col">
+                  <label for="input-max-price" class="form-label">Input Max Price</label>
+                  <input type="number" class="form-control" id="input-max-price" min="50000" max="1500000" step="5000" value="{{ $max_price }}">
                 </div>
               </div>
+              <div class="text-end mt-3">
+                <button id="apply-price-filter" class="btn btn-primary btn-sm">Terapkan Filter</button>
             </div>
+
           </div>
-        </div>
-      </div>
+
 
       <div class="shop-list flex-grow-1">
         <div class="swiper-container js-swiper-slider slideshow slideshow_small slideshow_split" data-settings='{
@@ -363,11 +377,10 @@
                 <div class="product-card__price d-flex">
                     <span class="money price">
                         @if ($product->sale_price)
-                        <!-- IDR -->
-                            <s>${{ number_format($product->regular_price, 0, ',', '.') }}</s>
-                            ${{ number_format($product->sale_price, 0, ',', '.') }}
+                            <s>IDR{{ number_format($product->regular_price, 0, ',', '.') }}</s>
+                            IDR{{ number_format($product->sale_price, 0, ',', '.') }}
                         @else
-                            ${{ number_format($product->regular_price, 0, ',', '.') }}
+                            IDR{{ number_format($product->regular_price, 0, ',', '.') }}
                         @endif
                     </span>
                 </div>
@@ -392,30 +405,12 @@
                   <span class="reviews-note text-lowercase text-secondary ms-1">4k+ reviews</span>
                 </div>
 
-                @if(Cart::instance('wishlist')->content()->where('id',$product->id)->count() > 0)
-    <form method="POST" action="{{route('wishlist.remove',['rowId'=>Cart::instance('wishlist')->content()->where('id',$product->id)->first()->rowId])}}">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="pc_btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist filled-heart" title="Remove From Wishlist">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_heart" />
-            </svg>
-        </button>
-    </form>
-@else
-    <form method="POST" action="{{route('wishlist.add')}}">
-        @csrf
-        <input type="hidden" name="id" value="{{$product->id}}" />
-        <input type="hidden" name="name" value="{{$product->name}}" />
-        <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price : $product->sale_price }}" />
-        <input type="hidden" name="quantity" value="1" />
-        <button type="submit" class="pc_btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_heart" />
-            </svg>
-        </button>
-    </form>
-@endif
+                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
+                  title="Add To Wishlist">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <use href="#icon_heart" />
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
@@ -432,66 +427,86 @@
 
         <form id="frmfilter" action="{{ route('shop.index') }}" method="GET">
             <input type="hidden" name="page" value="{{ $products->currentPage() }}">
-            <input type="hidden" name="size" value="{{ $size }}" />
-            <input type="hidden" name="order" value="{{ $order }}" />
-            <input type="hidden" name="brands" id="hdnBrands" />
-            <input type="hidden" name="categories" id="hdnCategories" />
-            <input type="hidden" name="min" id="hdnMinPrice" value="{{$min_price}}" />
-            <input type="hidden" name="max" id="hdnMaxPrice" value="{{$max_price}}" />
+            <input type="hidden" name="size" id="size" value="{{ $size }}">
+            <input type="hidden" name="order" id="order" value="{{ $order }}">
+            <input type="hidden" name="brands" id="hdnBrands">
+            <input type="hidden" name="categories" id="hdnCategories">
+            <input type="hidden" id="hdnMinPrice" name="min" value="{{ $min_price }}">
+            <input type="hidden" id="hdnMaxPrice" name="max" value="{{ $max_price }}">
+
+
         </form>
 
         @endsection
 
         @push('scripts')
         <script>
-            $(function(){
-                $("#pagesize").on("change", function(){
-                    $("input[name='size']").val($("#pagesize option:selected").val());
-                    $("#frmfilter").submit();
+            $(function () {
+                function formatRupiah(angka) {
+                    return 'IDR ' + parseInt(angka).toLocaleString('id-ID');
+                }
+
+                const $slider = $('.price-range-slider').slider({
+                    formatter: function (value) {
+                        return formatRupiah(value[0]) + ' - ' + formatRupiah(value[1]);
+                    }
                 });
 
-                $("#orderby").on("change", function(){
-                    $("input[name='order']").val($("#orderby option:selected").val());
-                    $("#frmfilter").submit();
+                const $minInput = $('#input-min-price');
+                const $maxInput = $('#input-max-price');
+                const $hiddenMin = $('#hdnMinPrice');
+                const $hiddenMax = $('#hdnMaxPrice');
+
+                $slider.on('change', function (e) {
+                    const [min, max] = e.value.newValue;
+                    $minInput.val(min);
+                    $maxInput.val(max);
+                    $hiddenMin.val(min);
+                    $hiddenMax.val(max);
+                    $(".price-range__min").text(formatRupiah(min));
+                    $(".price-range__max").text(formatRupiah(max));
                 });
 
-                $("input[name='brands']").on("change", function(){
-                    var brands = "";
-                    $("input[name='brands']:checked").each(function(){
-                        if(brands == ""){
-                            brands += $(this).val();
-                        }else{
-                            brands += "," + $(this).val();
-                        }
-                    });
+                $minInput.on('input', function () {
+                    const min = parseInt($minInput.val()) || 50000;
+                    const max = parseInt($maxInput.val()) || 1500000;
+                    $slider.slider('setValue', [min, max]);
+                    $hiddenMin.val(min);
+                    $(".price-range__min").text(formatRupiah(min));
+                });
+
+                $maxInput.on('input', function () {
+                    const min = parseInt($minInput.val()) || 50000;
+                    const max = parseInt($maxInput.val()) || 1500000;
+                    $slider.slider('setValue', [min, max]);
+                    $hiddenMax.val(max);
+                    $(".price-range__max").text(formatRupiah(max));
+                });
+
+                // Jangan langsung submit, hanya update hidden field
+                $("input[name='brands']").on("change", function () {
+                    var brands = $("input[name='brands']:checked").map(function () {
+                        return this.value;
+                    }).get().join(",");
                     $("#hdnBrands").val(brands);
-                    $("#frmfilter").submit();
                 });
 
-
-                $("input[name='categories']").on("change", function(){
-                    var categories = "";
-                    $("input[name='categories']:checked").each(function(){
-                        if(categories == ""){
-                            categories += $(this).val();
-                        }else{
-                            categories += "," + $(this).val();
-                        }
-                    });
+                $("input[name='categories']").on("change", function () {
+                    var categories = $("input[name='categories']:checked").map(function () {
+                        return this.value;
+                    }).get().join(",");
                     $("#hdnCategories").val(categories);
-                    $("#frmfilter").submit();
                 });
 
-                $("[name='price_range']").on("change", function(){
-                    var min = $(this).val().split(',')[0];
-                    var max = $(this).val().split(',')[1];
-                    $("#hdnMinPrice").val(min);
-                    $("#hdnMaxPrice").val(max);
-                    // setTimeout(() => {
-                    //     $("#frmfilter").submit();
-                    // }, 2000);
+                // Submit hanya saat klik "Terapkan Filter"
+                $('#apply-price-filter').on('click', function () {
+                    $('#frmfilter').submit();
+                });
+
+                $("#pagesize, #orderby").on("change", function () {
                     $("#frmfilter").submit();
                 });
             });
-        </script>
+            </script>
+
         @endpush

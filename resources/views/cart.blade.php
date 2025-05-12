@@ -1,14 +1,22 @@
 @extends('layouts.app')
 @section('content')
 <style>
-  .text-success{
+  .text-success {
     color: #278c04 !important;
   }
-  .text-danger{
+  .text-danger {
     color: #d61808 !important;
   }
+  .qty-control {
+    display: flex;
+    align-items: center;
+  }
+  .qty-control__number {
+    width: 60px;
+    margin: 0 10px;
+  }
 </style>
-<main class="pt-90 ">
+<main class="pt-90">
     <div class="mb-4 pb-4 pt-3 mt-3"></div>
     <section class="shop-checkout container">
       <h2 class="page-title">Cart</h2>
@@ -36,7 +44,7 @@
         </a>
       </div>
       <div class="shopping-cart">
-        @if ($items->count()>0)
+        @if ($items->count() > 0)
         <div class="cart-table__wrapper">
           <table class="cart-table">
             <thead>
@@ -50,11 +58,13 @@
               </tr>
             </thead>
             <tbody>
-                @foreach ($items as $item)
-              <tr>
+              @foreach ($items as $item)
+              <tr data-rowid="{{$item->rowId}}">
                 <td>
                   <div class="shopping-cart__product-item">
-                    <img loading="lazy" src="{{asset('uploads/products/thumbnails')}}/{{$item->model->image}}" width="120" height="120" alt="{{$item->name}}" />
+                    <img loading="lazy"
+                    src="{{ $item->model && $item->model->image ? asset('uploads/products/thumbnails/' . $item->model->image) : asset('images/default-product.jpg') }}"
+                    width="120" height="120" alt="{{$item->name}}" />
                   </div>
                 </td>
                 <td>
@@ -67,71 +77,52 @@
                   </div>
                 </td>
                 <td>
-                  <!-- IDR -->
                   <span class="shopping-cart__product-price">$ {{$item->price}}</span>
                 </td>
                 <td>
                   <div class="qty-control position-relative">
-                    <input type="number" name="quantity" value="{{$item->qty}}" min="1" class="qty-control__number text-center">
-                    <form method="POST" action="{{route('cart.qty.decrease', ['rowId'=>$item->rowId])}}">
-                    @csrf
-                    @method('PUT')
-                    <div class="qty-control__reduce">-</div>
-                    </form>
-                    <form method="POST" action="{{route('cart.qty.increase', ['rowId'=>$item->rowId])}}">
-                    @csrf
-                    @method('PUT')
-                    <div class="qty-control__increase">+</div>
-                </form>
+                    <button class="qty-control__reduce" data-rowid="{{$item->rowId}}">-</button>
+                    <input type="number" name="quantity" value="{{$item->qty}}" min="1" class="qty-control__number text-center update-qty" data-rowid="{{$item->rowId}}">
+                    <button class="qty-control__increase" data-rowid="{{$item->rowId}}">+</button>
                   </div>
                 </td>
                 <td>
-                  <!-- IDR -->
                   <span class="shopping-cart__subtotal">$ {{$item->subTotal()}}</span>
                 </td>
                 <td>
-                    <form method="POST" action="{{route('cart.item.remove', ['rowId'=>$item->rowId])}}">
-                      @csrf
-                      @method('DELETE')
-                      <a href="javascript:void(0)" class="remove-cart" onclick="confirmDelete(event)">
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                          <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                        </svg>
-                      </a>
-                    </form>
-                  </td>
+                  <a href="javascript:void(0)" class="remove-cart" data-rowid="{{$item->rowId}}">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
+                      <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
+                    </svg>
+                  </a>
+                </td>
               </tr>
               @endforeach
             </tbody>
           </table>
           <div class="cart-table-footer">
-          @if(!Session::has('coupon'))
-          <form action="{{route('cart.coupon.apply')}}" method="POST" class="position-relative bg-body">
+            @if(!Session::has('coupon'))
+            <form action="{{route('cart.coupon.apply')}}" method="POST" class="position-relative bg-body">
               @csrf
               <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="">
               <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
-          </form>
-          @else
-          <form action="{{route('cart.coupon.remove')}}" method="POST" class="position-relative bg-body">
+            </form>
+            @else
+            <form action="{{route('cart.coupon.remove')}}" method="POST" class="position-relative bg-body">
               @csrf
               @method('DELETE')
-              <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="@if(Session::has('coupon')) {{Session::get('coupon')['code']}} @endif">
+              <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="{{Session::get('coupon')['code']}}">
               <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="REMOVE COUPON">
-          </form>
-          @endif
-
-              <form action="{{route('cart.empty')}}" method="POST">
-                  @csrf
-                  @method('DELETE')
-                  <button class="btn btn-light" type="submit">CLEAR CART</button>
-              </form>
+            </form>
+            @endif
+            <button class="btn btn-light clear-cart">CLEAR CART</button>
           </div>
 
           @if(Session::has('success'))
-              <p class="text-success">{{Session::get('success')}}</p>
+          <p class="text-success">{{Session::get('success')}}</p>
           @elseif(Session::has('error'))
-              <p class="text-danger">{{Session::get('error')}}</p>
+          <p class="text-danger">{{Session::get('error')}}</p>
           @endif
         </div>
         <div class="shopping-cart__totals-wrapper">
@@ -140,32 +131,32 @@
               <h3>Cart Totals</h3>
               @if(Session::has('discounts'))
               <table class="cart-totals">
-                  <tbody>
-                      <tr>
-                          <th>Subtotal</th>
-                          <td>${{Cart::instance('cart')->subtotal()}}</td>
-                      </tr>
-                      <tr>
-                          <th>Discount {{Session::get('coupon')['code']}}</th>
-                          <td>${{Session::get('discounts')['discount']}}</td>
-                      </tr>
-                      <tr>
-                          <th>Subtotal After Discount</th>
-                          <td>${{Session::get('discounts')['subtotal']}}</td>
-                      </tr>
-                      <tr>
-                          <th>Shipping</th>
-                          <td>Free</td>
-                      </tr>
-                      <tr>
-                          <th>VAT</th>
-                          <td>${{Session::get('discounts')['tax']}}</td>
-                      </tr>
-                      <tr>
-                          <th>Total</th>
-                          <td>${{Session::get('discounts')['total']}}</td>
-                      </tr>
-                  </tbody>
+                <tbody>
+                  <tr>
+                    <th>Subtotal</th>
+                    <td>${{Cart::instance('cart')->subtotal()}}</td>
+                  </tr>
+                  <tr>
+                    <th>Discount {{Session::get('coupon')['code']}}</th>
+                    <td>${{Session::get('discounts')['discount']}}</td>
+                  </tr>
+                  <tr>
+                    <th>Subtotal After Discount</th>
+                    <td>${{Session::get('discounts')['subtotal']}}</td>
+                  </tr>
+                  <tr>
+                    <th>Shipping</th>
+                    <td>Free</td>
+                  </tr>
+                  <tr>
+                    <th>VAT</th>
+                    <td>${{Session::get('discounts')['tax']}}</td>
+                  </tr>
+                  <tr>
+                    <th>Total</th>
+                    <td>${{Session::get('discounts')['total']}}</td>
+                  </tr>
+                </tbody>
               </table>
               @else
               <table class="cart-totals">
@@ -198,31 +189,97 @@
           </div>
         </div>
         @else
-            <div class="roe">
-                <div class="col-md-12 text-center pt-5 bp-5">
-                    <p>o item found in your cart</p>
-                    <a href="{{route('shop.index')}}" class="btn btn-info">Shop Now</a>
-                </div>
-            </div>
+        <div class="row">
+          <div class="col-md-12 text-center pt-5 bp-5">
+            <p>No item found in your cart</p>
+            <a href="{{route('shop.index')}}" class="btn btn-info">Shop Now</a>
+          </div>
+        </div>
         @endif
       </div>
     </section>
-  </main>
+</main>
 @endsection
 @push('scripts')
 <script>
-    $(function(){
-        //+ dan - quantity product
-    $(".qty-control__increase").on("click", function(){
-        $(this).closest('form').submit();
+$(function() {
+  // Increase quantity
+  $(".qty-control__increase").on("click", function() {
+    let rowId = $(this).data("rowid");
+    updateQuantity(rowId, 'increase');
+  });
+
+  // Decrease quantity
+  $(".qty-control__reduce").on("click", function() {
+    let rowId = $(this).data("rowid");
+    updateQuantity(rowId, 'decrease');
+  });
+
+  // Update quantity on input change
+  $(".update-qty").on("change", function() {
+    let rowId = $(this).data("rowid");
+    let qty = $(this).val();
+    updateQuantity(rowId, 'set', qty);
+  });
+
+  // Remove item
+  $(".remove-cart").on("click", function() {
+    let rowId = $(this).data("rowid");
+    $.ajax({
+      url: '/cart/remove/' + rowId,
+      method: 'DELETE',
+      data: {
+        _token: '{{ csrf_token() }}'
+      },
+      success: function(response) {
+        location.reload();
+      },
+      error: function(xhr) {
+        alert('Error removing item from cart');
+      }
     });
-    $(".qty-control__reduce").on("click", function(){
-        $(this).closest('form').submit();
+  });
+
+  // Clear cart
+  $(".clear-cart").on("click", function() {
+    if (confirm('Are you sure you want to clear the cart?')) {
+      $.ajax({
+        url: '{{ route('cart.empty') }}',
+        method: 'DELETE',
+        data: {
+          _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+          location.reload();
+        },
+        error: function(xhr) {
+          alert('Error clearing cart');
+        }
+      });
+    }
+  });
+
+  function updateQuantity(rowId, action, qty = null) {
+    let data = {
+      _token: '{{ csrf_token() }}',
+      action: action
+    };
+    if (qty !== null) {
+      data.quantity = qty;
+    }
+
+    $.ajax({
+      url: '/cart/update-qty/' + rowId,
+      method: 'PUT',
+      data: data,
+      success: function(response) {
+        location.reload();
+      },
+      error: function(xhr) {
+        alert('Error updating quantity');
+      }
     });
-    //delete cart
-    $(".remove-cart").on("click", function(){
-        $(this).closest('form').submit();
-    });
-})
+  }
+});
 </script>
 @endpush

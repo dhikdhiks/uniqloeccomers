@@ -40,7 +40,7 @@
         <div class="row">
           <div class="col-lg-3">
               @include('user.account-nav')
-          </div> 
+          </div>
 
             <div class="col-lg-9">
                 <div class="wg-table table-all-user">
@@ -48,7 +48,7 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="text-center" style="width: 80px">No</th>
+                                    <th class="text-center" style="width: 80px">Order No</th>
                                     <th>Name</th>
                                     <th class="text-center">Phone</th>
                                     <th class="text-center">Subtotal</th>
@@ -67,10 +67,18 @@
                                   <td class="text-center">{{ $order->id }}</td>
                                   <td class="text-center">{{ $order->name }}</td>
                                   <td class="text-center">{{ $order->phone }}</td>
-                                  <td class="text-center">${{ $order->subtotal }}</td>
-                                  <td class="text-center">${{ $order->tax }}</td>
-                                  <td class="text-center">${{ $order->total }}</td>
-                                  <td class="text-center">{{ $order->status }}</td>
+                                  <td class="text-center">IDR {{ $order->subtotal }}</td>
+                                  <td class="text-center">IDR {{ $order->tax }}</td>
+                                  <td class="text-center">IDR {{ $order->total }}</td>
+                                  <td class="text-center">
+                                    @if($order->status == 'delivered')
+                                    <span class="badge bg-success">Delivered</span>
+                                    @elseif($order->status == 'canceled')
+                                        <span class="badge bg-danger">Canceled</span>
+                                    @else
+                                        <span class="badge bg-warning">Ordered</span>
+                                    @endif
+                                  </td>
                                   <td class="text-center">{{ $order->created_at }}</td>
                                   <td class="text-center">{{ $order->orderItems->count() }}</td>
                                   <td class="text-center">{{ $order->delivered_date }}</td>
@@ -84,17 +92,17 @@
                                       </a>
                                   </td>
                               </tr>
-                              @endforeach                     
+                              @endforeach
                             </tbody>
-                        </table>                
+                        </table>
                     </div>
                 </div>
                 <div class="divider"></div>
-                <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">                
+                <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
                     {{$orders->links('pagination::bootstrap-5')}}
                 </div>
             </div>
-            
+
         </div>
     </section>
 </main>

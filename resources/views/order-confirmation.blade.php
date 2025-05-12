@@ -53,8 +53,8 @@
           </div>
           <div class="order-info__item">
             <label>Payment Method</label>
-            <span>{{$order->transaction->mode}}</span>
-          </div>
+            <span>{{ $order->transaction->mode }}</span>
+          </div>place
         </div>
         <div class="checkout__totals-wrapper">
           <div class="checkout__totals">

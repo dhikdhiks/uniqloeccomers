@@ -55,16 +55,6 @@ class AdminController extends Controller
         return view('admin.brand-edit', compact('brand'));
     }
 
-    //softdelete
-    // public function brand_delete($id){
-    //     $brand = Brand::find($id);
-    //     if ($brand) {
-    //         $brand->delete();
-    //         return redirect()->route('admin.brands')->with('status', 'Brand has been deleted successfully');
-    //     }
-    //     return redirect()->route('admin.brands')->with('error', 'Brand not found');
-    // }
-
     //forcedelete-brand
     public function brand_delete($id){
         $brand = Brand::find($id);
@@ -148,16 +138,6 @@ class AdminController extends Controller
             $category = category::find($id);
             return view('admin.category-edit', compact('category'));
         }
-
-        //softdelete
-        // public function category_delete($id){
-        //     $category = category::find($id);
-        //     if ($category) {
-        //         $category->delete();
-        //         return redirect()->route('admin.categories')->with('status', 'category has been deleted successfully');
-        //     }
-        //     return redirect()->route('admin.categories')->with('error', 'category not found');
-        // }
 
         //forcedelete
         public function category_delete($id){
@@ -488,9 +468,30 @@ class AdminController extends Controller
         $orderItems = OrderItem::where('order_id', $order_id)->orderBy('id')->paginate(12);
         $transaction = Transaction::where('order_id', $order_id)->first();
 
-        return view('admin.order-details', compact('order', 'orderItems', 'transaction'));
+        return view('admin.order-details', compact('order','orderItems','transaction'));
+    }
+    public function update_order_status(Request $request)
+    {
+        $order= Order::find($request->order_id);
+        $order->status = $request->order_status;
+        if($request->order_status == 'delivered')
+        {
+            $order->delivered_date = Carbon::now();
+        }
+        else if($request->order_status == 'canceled')
+        {
+            $order->canceled_date = Carbon::now();
+        }
+        $order->save();
+
+        if ($request->order_status == 'delivered') {
+            $transaction = Transaction::where('order_id', $request->order_id)->first();
+            $transaction->status = 'approved';
+            $transaction->save();
+        }
+        return back()->with("status", "status changed succesfully");
     }
 
-    
-    
+
+
 }
