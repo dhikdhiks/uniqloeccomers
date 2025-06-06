@@ -16,9 +16,10 @@
 6. Copy file .env:
    ```bash
    cp .env.example .env
-8. Generate app key:
+8. Generate app key dan storage link:
    ```bash
    php artisan key:generate
+   php artisan storage:link
 10. Konfigurasi database di file .env, lalu migrate, buat database baru beserta user non root
     ```bash
     mysql -u root
