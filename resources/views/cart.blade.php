@@ -276,7 +276,7 @@ $(function() {
         location.reload();
       },
       error: function(xhr) {
-        alert('Error updating quantity');
+        location.reload();;
       }
     });
   }

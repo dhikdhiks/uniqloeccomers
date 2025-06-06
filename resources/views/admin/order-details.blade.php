@@ -165,7 +165,7 @@
                                     <span class="badge bg-success">Approved</span>
                                 @elseif(optional($transaction)->status == 'decline')
                                     <span class="badge bg-danger">Declined</span>
-                                @elseif(optional($transaction)->status == 'refunded')
+                                @elseif(optional($transaction)->status == 'refunded') 
                                     <span class="badge bg-secondary">Refunded</span>
                                 @else
                                     <span class="badge bg-warning">Pending</span>

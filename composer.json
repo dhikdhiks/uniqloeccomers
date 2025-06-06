@@ -12,6 +12,8 @@
         "laravel/socialite": "^5.19",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
+        "mallardduck/blade-boxicons": "^2.4",
+        "munafio/chatify": "^1.6",
         "surfsidemedia/shoppingcart": "^2.0"
     },
     "require-dev": {

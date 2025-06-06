@@ -49,6 +49,11 @@
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
+                        <div class="text-center mt-2">
+                            <a class="text-decoration-none" href="{{ route('register') }}">
+                                Have account? Login in here
+                            </a>
+                        </div
 
                         @if (Route::has('password.request'))
                             <div class="text-center mt-2">

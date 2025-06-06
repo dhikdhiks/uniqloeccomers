@@ -24,6 +24,89 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/sweetalert.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
         @stack("styles")
+
+        <!-- Tambahan style untuk memperbaiki tampilan user -->
+        <style>
+            .header-grid {
+                display: flex;
+                align-items: center;
+                gap: 1rem; /* Jarak antar elemen di header-grid */
+                margin-right: 2rem; /* Menggeser ke kiri dengan menambah margin kanan */
+            }
+
+            .popup-wrap.user.type-header {
+                margin-right: 1rem; /* Menggeser lebih ke kiri */
+            }
+
+            .header-user.wg-user {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem; /* Jarak antara foto dan teks */
+                max-width: 200px; /* Batasi lebar maksimum untuk mencegah overflow */
+            }
+
+            .header-user.wg-user .image {
+                flex-shrink: 0; /* Pastikan foto tidak menyusut */
+            }
+
+            .header-user.wg-user .image img {
+                width: 40px; /* Ukuran foto lebih besar */
+                height: 40px;
+                border-radius: 50%; /* Foto bulat */
+                object-fit: cover;
+            }
+
+            .header-user.wg-user .flex-column {
+                display: flex;
+                flex-direction: column;
+                max-width: 150px; /* Batasi lebar teks */
+                overflow: hidden; /* Sembunyikan teks yang melebihi batas */
+            }
+
+            .header-user.wg-user .body-title {
+                font-size: 1rem; /* Ukuran font nama */
+                font-weight: 600;
+                color: #333;
+                white-space: nowrap; /* Pastikan teks tidak pindah baris */
+                overflow: hidden;
+                text-overflow: ellipsis; /* Tambahkan elipsis (...) jika teks terpotong */
+            }
+
+            .header-user.wg-user .text-tiny {
+                font-size: 0.875rem; /* Ukuran font role */
+                color: #666;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .dropdown-menu {
+                min-width: 200px; /* Pastikan dropdown cukup lebar */
+            }
+
+            @media (max-width: 768px) {
+                .header-grid {
+                    margin-right: 1rem; /* Kurangi margin di perangkat mobile */
+                }
+
+                .header-user.wg-user {
+                    max-width: 150px; /* Kurangi lebar maksimum di mobile */
+                }
+
+                .header-user.wg-user .image img {
+                    width: 35px; /* Kurangi ukuran foto di mobile */
+                    height: 35px;
+                }
+
+                .header-user.wg-user .body-title {
+                    font-size: 0.9rem; /* Kurangi ukuran font di mobile */
+                }
+
+                .header-user.wg-user .text-tiny {
+                    font-size: 0.75rem;
+                }
+            }
+        </style>
     </head>
     <body class="body">
         <div id="wrapper">
@@ -142,8 +225,11 @@
                                     </li>
                                     <li class="menu-item">
                                         <a href="{{route('admin.coupons')}}" class="">
-                                            {{-- <div class="icon"><i class="icon-grid"></i></div> --}}
-                                            <div class="text">Coupons</div>
+                                                <div class="icon">
+                                                    <x-bxs-discount class="bxs-discount" />
+                                                </div>
+                                                <div class="text">Coupons</div>
+                                        </li>
                                         </a>
                                     </li>
 
@@ -398,10 +484,10 @@
                                                     <span class="image">
                                                         <img src="{{ asset('images/avatar/user-1.png') }}" alt="">
                                                     </span>
-                                                    <span class="flex flex-column">
-                                                        <span class="body-title mb-2">Kristin Watson</span>
-                                                        <span class="text-tiny">Admin</span>
-                                                    </span>
+                                                        <span class="flex flex-column">
+                                                            <span class="body-title mb-2">{{ Auth::user()->name }}</span>
+                                                            <span class="text-tiny"> {{ Auth::user()->utype === 'ADM' ? 'Admin' : 'User' }}</span>
+                                                        </span>
                                                 </span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end has-content"
@@ -411,7 +497,7 @@
                                                         <div class="icon">
                                                             <i class="icon-user"></i>
                                                         </div>
-                                                        <div class="body-title-2">Account</div>
+                                                        <div class="body-title-2" href="{{route('admin.index')}}">Account</div>
                                                     </a>
                                                 </li>
                                                 <li>
@@ -440,7 +526,8 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="login.html" class="user-item">
+                                                    @csrf
+                                                    <a href="{{route('logout')}}" class="user-item">
                                                         <div class="icon">
                                                             <i class="icon-log-out"></i>
                                                         </div>
