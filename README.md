@@ -1,10 +1,11 @@
 ## Cara Clone & Jalankan Project Ini
 
-1. Clone repository:
+1.[Klik disini untuk Install Composer dan komponen lain yang mungkin belum di insstall](https://www.notion.so/Dokumentasi-UKK-203e4e8344be809ca378c20ba3949685?source=copy_link)
+2. Clone repository:
    ```bash
    git clone https://github.com/dhikdhiks/uniqloeccomers.git
    cd uniqloeccomers
-2. Checkout ke branch Master(andhika)
+3. Checkout ke branch Master(andhika)
    ```bash
    git checkout master
 4. Install dependency:
@@ -26,4 +27,6 @@
     FLUSH PRIVILEGES;
     EXIT;
 
-12. php artisan serve / composer run dev
+12. Jalankan program dengan
+```bash
+php artisan serve / composer run dev
