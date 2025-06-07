@@ -16,6 +16,11 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
 use function PHPUnit\Framework\returnCallback;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver; // Atau Driver Imagick, tergantung driver yang Anda gunakan
+
+
+
 
 class AdminController extends Controller
 {
@@ -498,4 +503,73 @@ class AdminController extends Controller
         return view('admin.slides', compact('slides'));
     }
 
+    public function slide_add()
+    {
+        return view('admin.slide-add');
+    }
+
+    public function slide_store(Request $request)
+{
+    $request->validate([
+        'tagline' => 'required',
+        'title' => 'required',
+        'subtitle' => 'required',
+        'link' => 'required',
+        'status' => 'required',
+        'image' => 'required|mimes:png,jpg,jpeg|max:2048'
+    ]);
+
+    $slide = new Slide();
+    $slide->tagline = $request->tagline;
+    $slide->title = $request->title;
+    $slide->subtitle = $request->subtitle;
+    $slide->link = $request->link;
+    $slide->status = $request->status;
+
+    $image = $request->file('image');
+        $file_extention = $request->file('image')->extension();
+        $file_name = Carbon::now()->timestamp.'.'.$file_extention;
+        $this->GenerateSlideThumbailsImage($image, $file_name);
+        $slide->image = $file_name;
+        $slide->save();
+        return redirect()->route('admin.slides')->with("status", "Slide added successfully!");
+    }
+
+    // public function GenerateSlideThumbailsImage($image, $imageName)
+    // {
+    //     $destinationPath = public_path('uploads/slides');
+    //     $img = Image::read($image)->path();
+    //     $img->cover(400,690, "top");
+    //     $img->resize(400,690,function($constraint){
+    //         $constraint->aspectRatio();
+    //     })->save($destinationPath.'/'.$imageName);
+    // }
+
+    public function GenerateSlideThumbailsImage($image, $imageName)
+    {
+        $destinationPath = public_path('uploads/slides');
+
+        // Pastikan direktori tujuan ada. Jika tidak, buatlah.
+        if (!File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true); // 0755 adalah permission yang direkomendasikan
+        }
+
+        // Inisialisasi ImageManager dengan driver yang Anda inginkan
+        $manager = new ImageManager(new Driver()); // Menggunakan GD driver sebagai contoh
+
+        // Baca gambar. $image adalah objek UploadedFile, jadi gunakan getRealPath() untuk mendapatkan path-nya.
+        $img = $manager->read($image->getRealPath());
+
+        // Lakukan manipulasi gambar.
+        // Metode cover() sudah melakukan resizing dan cropping sekaligus.
+        // Jadi, baris resize() yang terpisah setelah cover() umumnya tidak diperlukan
+        // jika tujuannya adalah satu gambar dengan ukuran tersebut.
+        $img->cover(400, 690, "top");
+
+        // Simpan gambar yang sudah dimanipulasi
+        $img->save($destinationPath.'/'.$imageName);
+    }
+
+    // ... sisa fungsi-fungsi lainnya
 }
+
