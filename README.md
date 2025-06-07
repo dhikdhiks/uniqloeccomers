@@ -1,15 +1,39 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Cara Clone & Jalankan Project Ini
 
-## About Laravel
+1.[Klik disini untuk Install Composer dan komponen lain yang mungkin belum di insstall](https://www.notion.so/Dokumentasi-UKK-203e4e8344be809ca378c20ba3949685?source=copy_link)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+2. Clone repository:
+   ```bash
+   git clone https://github.com/dhikdhiks/uniqloeccomers.git
+   cd uniqloeccomers
+3. Checkout ke branch Master(andhika)
+   ```bash
+   git checkout master
+4. Install dependency:
+   ```bash
+   composer install
+   npm install && npm run build
+6. Copy file .env:
+   ```bash
+   cp .env.example .env
+8. Generate app key dan storage link:
+   ```bash
+   php artisan key:generate
+   php artisan storage:link
+10. Konfigurasi database di file .env, lalu migrate, buat database baru beserta user non root
+    ```bash
+    mysql -u root
+    CREATE DATABASE pkk;
+    CREATE USER 'pkk'@'localhost' IDENTIFIED BY '123';
+    GRANT ALL PRIVILEGES ON pkk.* TO 'pkk'@'localhost';
+    FLUSH PRIVILEGES;
+    EXIT;
+
+12. Jalankan program dengan
+```bash
+php artisan serve / composer run dev
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).
 - [Powerful dependency injection container](https://laravel.com/docs/container).
