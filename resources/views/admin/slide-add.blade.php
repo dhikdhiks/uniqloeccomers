@@ -38,13 +38,13 @@
                 </fieldset>
                 <fieldset class="name">
                     <div class="body-title">Title <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="title" name=""
+                    <input class="flex-grow" type="text" placeholder="title" name="title"
                         tabindex="0" value="{{ old('title') }}" aria-required="true" required="">
                 </fieldset>
                 <fieldset class="name">
                     <div class="body-title">Subtitle <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="subtitel" name="subtitel"
-                        tabindex="0" value="{{ old('subtitel') }}" aria-required="true" required="">
+                    <input class="flex-grow" type="text" placeholder="subtitle" name="subtitle"
+                        tabindex="0" value="{{ old('subtitle') }}" aria-required="true" required="">
                 </fieldset>
                 <fieldset class="name">
                     <div class="body-title">Link <span class="tf-color-1">*</span></div>

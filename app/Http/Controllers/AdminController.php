@@ -15,9 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
+//use Intervention\Image\Facades\Image;
 use function PHPUnit\Framework\returnCallback;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver; // Atau Driver Imagick, tergantung driver yang Anda gunakan
 
 
 
@@ -545,30 +544,45 @@ class AdminController extends Controller
     //     })->save($destinationPath.'/'.$imageName);
     // }
 
+
     public function GenerateSlideThumbailsImage($image, $imageName)
-    {
-        $destinationPath = public_path('uploads/slides');
+{
+    $destinationPath = public_path('uploads/slides');
 
-        // Pastikan direktori tujuan ada. Jika tidak, buatlah.
-        if (!File::exists($destinationPath)) {
-            File::makeDirectory($destinationPath, 0755, true); // 0755 adalah permission yang direkomendasikan
-        }
+    $img = Image::make($image); // Perbaikan di sini
 
-        // Inisialisasi ImageManager dengan driver yang Anda inginkan
-        $manager = new ImageManager(new Driver()); // Menggunakan GD driver sebagai contoh
+    $img->fit(400, 690, function ($constraint) {
+        $constraint->upsize(); // Untuk mencegah memperbesar gambar kecil
+    }, 'top'); // 'top' mengatur anchor posisi crop
 
-        // Baca gambar. $image adalah objek UploadedFile, jadi gunakan getRealPath() untuk mendapatkan path-nya.
-        $img = $manager->read($image->getRealPath());
+    $img->save($destinationPath . '/' . $imageName);
+}
 
-        // Lakukan manipulasi gambar.
-        // Metode cover() sudah melakukan resizing dan cropping sekaligus.
-        // Jadi, baris resize() yang terpisah setelah cover() umumnya tidak diperlukan
-        // jika tujuannya adalah satu gambar dengan ukuran tersebut.
-        $img->cover(400, 690, "top");
 
-        // Simpan gambar yang sudah dimanipulasi
-        $img->save($destinationPath.'/'.$imageName);
-    }
+    // public function GenerateSlideThumbailsImage($image, $imageName)
+    // {
+    //     $destinationPath = public_path('uploads/slides');
+
+    //     // Pastikan direktori tujuan ada. Jika tidak, buatlah.
+    //     if (!File::exists($destinationPath)) {
+    //         File::makeDirectory($destinationPath, 0755, true); // 0755 adalah permission yang direkomendasikan
+    //     }
+
+    //     // Inisialisasi ImageManager dengan driver yang Anda inginkan
+    //     $manager = new ImageManager(new Driver()); // Menggunakan GD driver sebagai contoh
+
+    //     // Baca gambar. $image adalah objek UploadedFile, jadi gunakan getRealPath() untuk mendapatkan path-nya.
+    //     $img = $manager->read($image->getRealPath());
+
+    //     // Lakukan manipulasi gambar.
+    //     // Metode cover() sudah melakukan resizing dan cropping sekaligus.
+    //     // Jadi, baris resize() yang terpisah setelah cover() umumnya tidak diperlukan
+    //     // jika tujuannya adalah satu gambar dengan ukuran tersebut.
+    //     $img->cover(400, 690, "top");
+
+    //     // Simpan gambar yang sudah dimanipulasi
+    //     $img->save($destinationPath.'/'.$imageName);
+    // }
 
     // ... sisa fungsi-fungsi lainnya
 }
