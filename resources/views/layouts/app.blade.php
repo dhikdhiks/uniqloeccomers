@@ -691,7 +691,26 @@
                               // Membangun URL detail produk secara dinamis
                               var url = "{{ route('shop.product.details', ['product_slug' => 'product_slug_pls']) }}";
                               var link = url.replace('product_slug_pls', item.slug);
-  
+                              // $("#box-content-search").append(`
+                              //     <li>
+                              //         <ul class="product-item gap14 mb-10">
+                              //             <div class="image no-bg">
+                              //                 <img src="{{ asset('uploads/products/thumbnails') }}/${item.image}" alt="${item.name}">
+                              //             </div>
+                              //             <div class="flex items-center justify-between gap20 flex-grow">
+                              //                 <div class="name">
+                              //                     <a href="${link}" class="body-text">${item.name}</a>
+                              //                 </div>
+                              //             </div>
+                              //         </ul>
+                              //     </li>
+                              //     <li>
+                              //         <div class="mb-10"></div>
+                              //         <div class="divider"></div>
+                              //     </li>
+                              // `);
+
+                              //konfiguirasi baru
                               $("#box-content-search").append(`
                                 <li class="search-item d-flex align-items-center gap-3 mb-2">
                                     <img src="{{ asset('uploads/products/thumbnails') }}/${item.image}" alt="${item.name}" class="search-thumb">
