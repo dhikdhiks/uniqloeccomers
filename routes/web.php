@@ -103,3 +103,8 @@ Route::post('/contact/store', [HomeController::class, 'contact_store'])->name('h
 //gugel_login
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+
+// search
+
+Route::get('/search', [HomeController::class, 'search'])->name('home.search');
