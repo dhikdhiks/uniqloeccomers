@@ -127,15 +127,68 @@
                 }
               }
             }'>
+
+            <!-- Swiper JS -->
+{{-- <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Inisialisasi Swiper -->
+<script>
+    const swiper = new Swiper('.mySwiper', {
+        slidesPerView: 6,
+        spaceBetween: 20,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 3,
+            },
+            768: {
+                slidesPerView: 4,
+            },
+            1024: {
+                slidesPerView: 6,
+            }
+        }
+    });
+</script>
+
             <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <img loading="lazy" class="w-100 h-auto mb-3" src="{{ asset('assets/images/home/demo3/category_1.png') }}" width="124"
-                  height="124" alt="" />
-                <div class="text-center">
-                  <a href="#" class="menu-link fw-medium">Women<br />Tops</a>
-                </div>
-              </div>
-              <div class="swiper-slide">
+              @foreach ($categories as $category)
+                  <div class="swiper-slide">
+                      <img loading="lazy"
+                           class="w-32 h-32 mb-3 rounded-full object-cover mx-auto"
+                           src="{{ asset('uploads/categories/' . $category->image) }}"
+                           alt="{{ $category->name }}" />
+          
+                      <div class="text-center mt-2">
+                          <!-- Tampilkan ID -->
+                          <div class="text-sm text-gray-500">ID: {{ $category->id }}</div>
+          
+                          <!-- Tampilkan Nama -->
+                          <a href="{{ route('shop.index', ['categories' => $category->id]) }}"
+                             class="menu-link fw-medium block">
+                              {{ $category->name }}
+                          </a>
+                      </div>
+                  </div>
+              @endforeach
+          </div>
+           --}}
+
+           <div class="swiper-wrapper">
+    @foreach ($categories as $category)
+        <div class="swiper-slide">
+            <img loading="lazy" class="w-100 h-auto mb-3" src="{{ asset('uploads/categories') }}/{{ $category->image }}" width="124" height="124" alt="" />
+            <div class="text-center">
+                <a href="{{ route('shop.index', ['categories' => $category->id]) }}" class="menu-link fw-medium">{{ $category->name }}</a>
+            </div>
+        </div>
+    @endforeach
+
+          
+              {{-- <div class="swiper-slide">
                 <img loading="lazy" class="w-100 h-auto mb-3" src="{{ asset('assets/images/home/demo3/category_2.png') }}" width="124"
                   height="124" alt="" />
                 <div class="text-center">
@@ -183,7 +236,7 @@
                 <div class="text-center">
                   <a href="#" class="menu-link fw-medium">Kids<br />Tops</a>
                 </div>
-              </div>
+              </div> --}}
             </div><!-- /.swiper-wrapper -->
           </div><!-- /.swiper-container js-swiper-slider -->
 
