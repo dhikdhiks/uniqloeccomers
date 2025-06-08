@@ -74,6 +74,10 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/slides', [AdminController::class, 'slides'])->name('admin.slides');
     Route::get('/admin/slides/add', [AdminController::class, 'slide_add'])->name('admin.slide.add');
     Route::post('/admin/slide/store', [AdminController::class, 'slide_store'])->name('admin.slide.store');
+
+    Route::get('/admin/contact', [AdminController::class, 'contacts'])->name('admin.contacts');
+    Route::delete('/admin/contact/{id}/delete', [AdminController::class, 'contact_delete'])->name('admin.contact.delete');
+
 });
 
 //wishlust
@@ -93,6 +97,8 @@ Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkou
 Route::post('/place-an-order', [CartController::class, 'place_an_order'])->name('cart.place.an.order');
 Route::get('/order-confirmation', [CartController::class, 'order_confirmation'])->name('cart.order.confirmation');
 
+Route::get('/contact-us', [HomeController::class, 'contact'])->name('home.contact');
+Route::post('/contact/store', [HomeController::class, 'contact_store'])->name('home.contact.store');
 
 //gugel_login
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');

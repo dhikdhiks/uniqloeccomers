@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
 //use Intervention\Image\Facades\Image;
 use function PHPUnit\Framework\returnCallback;
-
+use App\Models\Contact;
 
 
 
@@ -585,5 +585,19 @@ class AdminController extends Controller
     // }
 
     // ... sisa fungsi-fungsi lainnya
+
+    public function contacts()
+    {
+        $contacts = Contact::orderBy('created_at', 'DESC')->paginate(10);
+        return view('admin.contacts', compact('contacts'));
+    }
+
+    public function contact_delete($id)
+    {
+        $contact = Contact::find($id);
+        $contact->delete();
+        return redirect()->route('admin.contacts')->with("status", "Contact deleted successfully!");
+    }
+
 }
 
