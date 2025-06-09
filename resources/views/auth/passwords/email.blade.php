@@ -38,6 +38,11 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="text-center mt-2">
+                            <a class="text-decoration-none" href="{{ route('login') }}">
+                               Login in here
+                            </a>
+                        </div
                     </form>
                 </div>
             </div>

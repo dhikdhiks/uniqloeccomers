@@ -10,6 +10,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
 
 Auth::routes();
 
@@ -33,6 +36,10 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/account-orders', [UserController::class, 'orders'])->name('user.orders');
     Route::get('/account-order/{order_id}/details', [UserController::class, 'order_details'])->name('user.order.details');
     Route::put('/account-order/cancel-order', [UserController::class, 'order_cancel'])->name('user.order.cancel');
+    Route::get('/account-address', [HomeController::class, 'address'])->name('address');
+    Route::post('/account-address', [HomeController::class, 'addressUpdate'])->name('address.update');
+    Route::get('/account/details', [HomeController::class, 'accountDetails'])->name('account.details');
+    Route::post('/account/details', [HomeController::class, 'updateAccountDetails'])->name('account.details.update');
 });
 //Admin
 Route::middleware(['auth', AuthAdmin::class])->group(function(){
@@ -72,6 +79,22 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 
     //slide
     Route::get('/admin/slides', [AdminController::class, 'slides'])->name('admin.slides');
+    Route::get('/admin/slide/add', [AdminController::class, 'slide_add'])->name('admin.slide.add');
+    Route::post('/admin/slide/store', [AdminController::class, 'slide_store'])->name('admin.slide.store');
+    Route::get('/admin/slide/edit/{id}', [AdminController::class, 'slide_edit'])->name('admin.slide.edit');
+    Route::put('/admin/slide/update', [AdminController::class, 'slide_update'])->name('admin.slide.update');
+    Route::delete('/admin/slide/delete/{id}', [AdminController::class, 'slide_delete'])->name('admin.slide.delete');
+
+    //contact
+    Route::get('/admin/contact', [AdminController::class, 'contacts'])->name('admin.contacts');
+    Route::delete('/admin/contact/{id}/delete', [AdminController::class, 'contact_delete'])->name('admin.contact.delete');
+    Route::get('/admin/contact/{id}/email', [AdminController::class, 'show_email_form'])->name('admin.contact.email.form');
+    Route::post('/admin/contact/{id}/email', [AdminController::class, 'send_email'])->name('admin.contact.email.send');
+
+
+
+    //search
+    Route::get('/admin/search', [AdminController::class, 'search'])->name('admin.search');
 });
 
 //wishlust
@@ -91,7 +114,22 @@ Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkou
 Route::post('/place-an-order', [CartController::class, 'place_an_order'])->name('cart.place.an.order');
 Route::get('/order-confirmation', [CartController::class, 'order_confirmation'])->name('cart.order.confirmation');
 
+//contact-user
+Route::get('/contact-us', [HomeController::class, 'contact'])->name('home.contact');
+Route::post('/contact/store', [HomeController::class, 'contact_store'])->name('home.contact.store');
+
+//search-user
+Route::get('/search', [HomeController::class, 'search'])->name('home.search');
 
 //gugel_login
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+//forgot
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+

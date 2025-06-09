@@ -27,6 +27,72 @@
 
         <!-- Tambahan style untuk memperbaiki tampilan user -->
         <style>
+            .search-popup__results {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 100%;
+              max-height: 400px;
+              overflow-y: auto;
+              background: #fff;
+              box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+              border-radius: 8px;
+              z-index: 10;
+              padding: 10px 0;
+              margin-top: 20px;
+            }
+
+            #box-content-search {
+              padding: 0;
+              margin: 0;
+              list-style: none;
+
+            }
+
+            .search-item {
+              padding: 8px 20px;
+              transition: background-color 0.2s ease;
+            }
+
+            .search-item:hover {
+              background-color: #f9f9f9;
+            }
+
+            .search-link {
+              display: flex;
+              align-items: center;
+              gap: 14px;
+              text-decoration: none;
+              color: #333;
+            }
+
+            .search-thumb {
+              width: 48px;
+              height: 48px;
+              object-fit: cover;
+              border-radius: 6px;
+              flex-shrink: 0;
+            }
+
+            .search-name {
+              font-size: 15px;
+              font-weight: 500;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            /* Responsive adjustment */
+            @media (max-width: 768px) {
+              .search-thumb {
+                width: 40px;
+                height: 40px;
+              }
+
+              .search-name {
+                font-size: 14px;
+              }
+            }
             .header-grid {
                 display: flex;
                 align-items: center;
@@ -218,9 +284,9 @@
                                         </ul>
                                     </li>
                                     <li class="menu-item">
-                                        <a href="slider.html" class="">
+                                        <a href="{{ route('admin.slides')}}" class="">
                                             <div class="icon"><i class="icon-image"></i></div>
-                                            <div class="text">Slider</div>
+                                            <div class="text">Slides</div>
                                         </a>
                                     </li>
                                     <li class="menu-item">
@@ -230,6 +296,14 @@
                                                 </div>
                                                 <div class="text">Coupons</div>
                                         </li>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="{{route('admin.contacts')}}" class="">
+                                            <div class="icon"><i class="icon-mail"></i></div>
+                                            <div class="text">Messages</div>
+                                        </a>
+                                    </li>
                                         </a>
                                     </li>
 
@@ -277,128 +351,14 @@
 
                                     <form class="form-search flex-grow">
                                         <fieldset class="name">
-                                            <input type="text" placeholder="Search here..." class="show-search" name="name"
+                                            <input type="text" placeholder="Search here..." class="show-search" name="name" id="search-input"
                                                 tabindex="2" value="" aria-required="true" required="">
                                         </fieldset>
                                         <div class="button-submit">
                                             <button class="" type="submit"><i class="icon-search"></i></button>
                                         </div>
                                         <div class="box-content-search" id="box-content-search">
-                                            <ul class="mb-24">
-                                                <li class="mb-14">
-                                                    <div class="body-title">Top selling product</div>
-                                                </li>
-                                                <li class="mb-14">
-                                                    <div class="divider"></div>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li class="product-item gap14 mb-10">
-                                                            <div class="image no-bg">
-                                                                <img src="{{ asset('images/products/17.png') }}" alt="">
-                                                            </div>
-                                                            <div class="flex items-center justify-between gap20 flex-grow">
-                                                                <div class="name">
-                                                                    <a href="product-list.html" class="body-text">Dog Food
-                                                                        Rachael Ray Nutrish®</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="mb-10">
-                                                            <div class="divider"></div>
-                                                        </li>
-                                                        <li class="product-item gap14 mb-10">
-                                                            <div class="image no-bg">
-                                                                <img src="{{ asset('images/products/18.png') }}" alt="">
-                                                            </div>
-                                                            <div class="flex items-center justify-between gap20 flex-grow">
-                                                                <div class="name">
-                                                                    <a href="product-list.html" class="body-text">Natural
-                                                                        Dog Food Healthy Dog Food</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="mb-10">
-                                                            <div class="divider"></div>
-                                                        </li>
-                                                        <li class="product-item gap14">
-                                                            <div class="image no-bg">
-                                                                <img src="{{ asset('images/products/19.png') }}" alt="">
-                                                            </div>
-                                                            <div class="flex items-center justify-between gap20 flex-grow">
-                                                                <div class="name">
-                                                                    <a href="product-list.html" class="body-text">Freshpet
-                                                                        Healthy Dog Food and Cat</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                            <ul class="">
-                                                <li class="mb-14">
-                                                    <div class="body-title">Order product</div>
-                                                </li>
-                                                <li class="mb-14">
-                                                    <div class="divider"></div>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li class="product-item gap14 mb-10">
-                                                            <div class="image no-bg">
-                                                                <img src="{{ asset('images/products/20.png') }}" alt="">
-                                                            </div>
-                                                            <div class="flex items-center justify-between gap20 flex-grow">
-                                                                <div class="name">
-                                                                    <a href="product-list.html" class="body-text">Sojos
-                                                                        Crunchy Natural Grain Free...</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="mb-10">
-                                                            <div class="divider"></div>
-                                                        </li>
-                                                        <li class="product-item gap14 mb-10">
-                                                            <div class="image no-bg">
-                                                                <img src="{{ asset('images/products/21.png') }}" alt="">
-                                                            </div>
-                                                            <div class="flex items-center justify-between gap20 flex-grow">
-                                                                <div class="name">
-                                                                    <a href="product-list.html" class="body-text">Kristin
-                                                                        Watson</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="mb-10">
-                                                            <div class="divider"></div>
-                                                        </li>
-                                                        <li class="product-item gap14 mb-10">
-                                                            <div class="image no-bg">
-                                                                <img src="{{ asset('images/products/22.png') }}" alt="">
-                                                            </div>
-                                                            <div class="flex items-center justify-between gap20 flex-grow">
-                                                                <div class="name">
-                                                                    <a href="product-list.html" class="body-text">Mega
-                                                                        Pumpkin Bone</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="mb-10">
-                                                            <div class="divider"></div>
-                                                        </li>
-                                                        <li class="product-item gap14">
-                                                            <div class="image no-bg">
-                                                                <img src="{{ asset('images/products/23.png') }}" alt="">
-                                                            </div>
-                                                            <div class="flex items-center justify-between gap20 flex-grow">
-                                                                <div class="name">
-                                                                    <a href="product-list.html" class="body-text">Mega
-                                                                        Pumpkin Bone</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </li>
+                                            <ul id="box-content-search">
                                             </ul>
                                         </div>
                                     </form>
@@ -501,39 +461,45 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="user-item">
+                                                    <a href="{{ route('admin.contacts') }}" class="user-item">
                                                         <div class="icon">
                                                             <i class="icon-mail"></i>
                                                         </div>
                                                         <div class="body-title-2">Inbox</div>
-                                                        <div class="number">27</div>
+                                                        <div class="number">{{ \App\Models\Contact::count() }}</div>
                                                     </a>
+
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="user-item">
+                                                    <a href="{{ route('admin.orders') }}" class="user-item">
                                                         <div class="icon">
                                                             <i class="icon-file-text"></i>
                                                         </div>
-                                                        <div class="body-title-2">Taskboard</div>
+                                                        <div class="body-title-2">Order</div>
+                                                        <div class="number">{{ \App\Models\Order::count() }}</div>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="user-item">
+                                                    <a href="{{ route('admin.index') }}" class="user-item">
                                                         <div class="icon">
                                                             <i class="icon-headphones"></i>
                                                         </div>
-                                                        <div class="body-title-2">Support</div>
+                                                        <div class="body-title-2">User</div>
+                                                        <div class="number">{{ \App\Models\User::count() }}</div>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    @csrf
-                                                    <a href="{{route('logout')}}" class="user-item">
-                                                        <div class="icon">
-                                                            <i class="icon-log-out"></i>
-                                                        </div>
-                                                        <div class="body-title-2">Log out</div>
-                                                    </a>
+                                                    <form method="POST" action="{{ route('logout') }}">
+                                                        @csrf
+                                                        <button type="submit" class="user-item border-0 bg-transparent p-0 w-100 text-start">
+                                                            <div class="icon">
+                                                                <i class="icon-log-out"></i>
+                                                            </div>
+                                                            <div class="body-title-2">Log out</div>
+                                                        </button>
+                                                    </form>
                                                 </li>
+
                                             </ul>
                                         </div>
                                     </div>
@@ -561,8 +527,158 @@
         <script src="{{ asset('js/apexcharts/apexcharts.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+          <script>
+            $(function() { // Dokumen siap fungsi (jQuery)
+                $("#search-input").on("keyup", function() { // Menambahkan event listener 'keyup' ke elemen dengan ID 'search-input'
+                    var searchQuery = $(this).val(); // Mengambil nilai input saat ini
 
+                    if (searchQuery.length > 2) { // Hanya melakukan pencarian jika panjang query lebih dari 2 karakter
+                        $.ajax({ // Melakukan permintaan AJAX
+                            type: "GET", // Tipe permintaan HTTP: GET
+                            url: "{{ route('admin.search') }}", // URL endpoint API pencarian, dihasilkan oleh Laravel
+                            data: { // Data yang akan dikirim dengan permintaan
+                                query: searchQuery // Mengirim nilai input sebagai parameter 'query'
+                            },
+                            dataType: 'json', // Mengharapkan respons dalam format JSON
+                            success: function(data) { // Callback function yang dieksekusi jika permintaan berhasil
+                                $("#box-content-search").html(''); // Mengosongkan konten elemen dengan ID 'box-content-search'
 
+                                $.each(data, function(index, item) { // Melakukan iterasi pada setiap item data yang diterima (hasil pencarian)
+                                    // Ini adalah bagian yang tidak lengkap di gambar, tetapi polanya jelas:
+                                    // Membangun URL detail produk secara dinamis
+                                    var url = "{{ route('admin.product.edit',['id' => 'product_id']) }}";
+                                    var link = url.replace('product_id',item.id);
+                                    // $("#box-content-search").append(`
+                                    //     <li>
+                                    //         <ul class="product-item gap14 mb-10">
+                                    //             <div class="image no-bg">
+                                    //                 <img src="{{ asset('uploads/products/thumbnails') }}/${item.image}" alt="${item.name}">
+                                    //             </div>
+                                    //             <div class="flex items-center justify-between gap20 flex-grow">
+                                    //                 <div class="name">
+                                    //                     <a href="${link}" class="body-text">${item.name}</a>
+                                    //                 </div>
+                                    //             </div>
+                                    //         </ul>
+                                    //     </li>
+                                    //     <li>
+                                    //         <div class="mb-10"></div>
+                                    //         <div class="divider"></div>
+                                    //     </li>
+                                    // `);
+
+                                    //konfiguirasi baru
+                                    $("#box-content-search").append(`
+                                      <li class="search-item d-flex align-items-center gap-3 mb-2">
+                                          <img src="{{ asset('uploads/products/thumbnails') }}/${item.image}" alt="${item.name}" class="search-thumb">
+                                          <a href="${link}" class="search-name fw-medium">${item.name}</a>
+                                      </li>
+                                  `);
+
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            (function ($) {
+
+                var tfLineChart = (function () {
+
+                    var chartBar = function () {
+
+                        var options = {
+                            series: [{
+                                name: 'Total',
+                                data: [0.00, 0.00, 0.00, 0.00, 0.00, 273.22, 208.12, 0.00, 0.00, 0.00, 0.00, 0.00]
+                            }, {
+                                name: 'Pending',
+                                data: [0.00, 0.00, 0.00, 0.00, 0.00, 273.22, 208.12, 0.00, 0.00, 0.00, 0.00, 0.00]
+                            },
+                            {
+                                name: 'Delivered',
+                                data: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
+                            }, {
+                                name: 'Canceled',
+                                data: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
+                            }],
+                            chart: {
+                                type: 'bar',
+                                height: 325,
+                                toolbar: {
+                                    show: false,
+                                },
+                            },
+                            plotOptions: {
+                                bar: {
+                                    horizontal: false,
+                                    columnWidth: '10px',
+                                    endingShape: 'rounded'
+                                },
+                            },
+                            dataLabels: {
+                                enabled: false
+                            },
+                            legend: {
+                                show: false,
+                            },
+                            colors: ['#2377FC', '#FFA500', '#078407', '#FF0000'],
+                            stroke: {
+                                show: false,
+                            },
+                            xaxis: {
+                                labels: {
+                                    style: {
+                                        colors: '#212529',
+                                    },
+                                },
+                                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                            },
+                            yaxis: {
+                                show: false,
+                            },
+                            fill: {
+                                opacity: 1
+                            },
+                            tooltip: {
+                                y: {
+                                    formatter: function (val) {
+                                        return "$ " + val + ""
+                                    }
+                                }
+                            }
+                        };
+
+                        chart = new ApexCharts(
+                            document.querySelector("#line-chart-8"),
+                            options
+                        );
+                        if ($("#line-chart-8").length > 0) {
+                            chart.render();
+                        }
+                    };
+
+                    /* Function ============ */
+                    return {
+                        init: function () { },
+
+                        load: function () {
+                            chartBar();
+                        },
+                        resize: function () { },
+                    };
+                })();
+
+                jQuery(document).ready(function () { });
+
+                jQuery(window).on("load", function () {
+                    tfLineChart.load();
+                });
+
+                jQuery(window).on("resize", function () { });
+            })(jQuery);
+        </script>
     </body>
   @stack("scripts")
 </html>

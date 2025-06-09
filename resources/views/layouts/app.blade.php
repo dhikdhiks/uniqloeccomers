@@ -329,7 +329,7 @@
                 <a href="about.html" class="navigation__link">About</a>
               </li>
               <li class="navigation__item">
-                <a href="contact.html" class="navigation__link">Contact</a>
+                <a href="{{ route('home.contact') }}" class="navigation__link">Contact</a>
               </li>
             </ul>
           </div>
@@ -418,7 +418,7 @@
                 <a href="about.html" class="navigation__link">About</a>
               </li>
               <li class="navigation__item">
-                <a href="contact.html" class="navigation__link">Contact</a>
+                <a href="{{ route('home.contact') }}" class="navigation__link">Contact</a>
               </li>
             </ul>
           </nav>
@@ -435,12 +435,12 @@
                 </a>
               </div>
 
-              <div class="search-popup js-hidden-content">
+                <div class="search-popup js-hidden-content">
                 <form action="#" method="GET" class="search-field container">
                   <p class="text-uppercase text-secondary fw-medium mb-4">What are you looking for?</p>
                   <div class="position-relative">
                     <input class="search-field__input search-popup__input w-100 fw-medium" type="text"
-                      name="search-keyword" placeholder="Search products" />
+                      name="search-keyword" id="search-input" placeholder="Search products" />
                     <button class="btn-icon search-popup__submit" type="submit">
                       <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -448,6 +448,11 @@
                       </svg>
                     </button>
                     <button class="btn-icon btn-close-lg search-popup__reset" type="reset"></button>
+                  </div>
+
+                  <div class="search-popup__results">
+                    <ul id="box-content-search">
+                    </ul>
                   </div>
 
                   <div class="search-popup__results">
@@ -584,7 +589,7 @@
               <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Careers</a></li>
               <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Affiliates</a></li>
               <li class="sub-menu__item"><a href="blog_list1.html" class="menu-link menu-link_us-s">Blog</a></li>
-              <li class="sub-menu__item"><a href="contact-2.html" class="menu-link menu-link_us-s">Contact Us</a></li>
+              <li class="sub-menu__item"><a href="{{ route('home.contact') }}" class="menu-link menu-link_us-s">Contact Us</a></li>
             </ul>
           </div>
 
@@ -682,6 +687,96 @@
     <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js')}}"></script>
     <script src="{{ asset('assets/js/plugins/swiper.min.js')}}"></script>
     <script src="{{ asset('assets/js/plugins/countdown.js')}}"></script>
+
+<script>
+      $(function() { // Dokumen siap fungsi (jQuery)
+          $("#search-input").on("keyup", function() { // Menambahkan event listener 'keyup' ke elemen dengan ID 'search-input'
+              var searchQuery = $(this).val(); // Mengambil nilai input saat ini
+
+              if (searchQuery.length > 2) { // Hanya melakukan pencarian jika panjang query lebih dari 2 karakter
+                  $.ajax({ // Melakukan permintaan AJAX
+                      type: "GET", // Tipe permintaan HTTP: GET
+                      url: "{{ route('home.search') }}", // URL endpoint API pencarian, dihasilkan oleh Laravel
+                      data: { // Data yang akan dikirim dengan permintaan
+                          query: searchQuery // Mengirim nilai input sebagai parameter 'query'
+                      },
+                      dataType: 'json', // Mengharapkan respons dalam format JSON
+                      success: function(data) { // Callback function yang dieksekusi jika permintaan berhasil
+                          $("#box-content-search").html(''); // Mengosongkan konten elemen dengan ID 'box-content-search'
+
+                          $.each(data, function(index, item) { // Melakukan iterasi pada setiap item data yang diterima (hasil pencarian)
+                              // Ini adalah bagian yang tidak lengkap di gambar, tetapi polanya jelas:
+                              // Membangun URL detail produk secara dinamis
+                              var url = "{{ route('shop.product.details', ['product_slug' => 'product_slug_pls']) }}";
+                              var link = url.replace('product_slug_pls', item.slug);
+                              // $("#box-content-search").append(`
+                              //     <li>
+                              //         <ul class="product-item gap14 mb-10">
+                              //             <div class="image no-bg">
+                              //                 <img src="{{ asset('uploads/products/thumbnails') }}/${item.image}" alt="${item.name}">
+                              //             </div>
+                              //             <div class="flex items-center justify-between gap20 flex-grow">
+                              //                 <div class="name">
+                              //                     <a href="${link}" class="body-text">${item.name}</a>
+                              //                 </div>
+                              //             </div>
+                              //         </ul>
+                              //     </li>
+                              //     <li>
+                              //         <div class="mb-10"></div>
+                              //         <div class="divider"></div>
+                              //     </li>
+                              // `);
+
+                              //konfiguirasi baru
+                              $("#box-content-search").append(`
+                                <li class="search-item d-flex align-items-center gap-3 mb-2">
+                                    <img src="{{ asset('uploads/products/thumbnails') }}/${item.image}" alt="${item.name}" class="search-thumb">
+                                    <a href="${link}" class="search-name fw-medium">${item.name}</a>
+                                </li>
+                            `);
+
+                          });
+                      }
+                  });
+              }
+          });
+      });
+  </script>
+
+  //ini style untuk tampilan jika di search
+  <style>
+    #box-content-search {
+      padding: 0;
+      list-style: none;
+      margin-top: 15px;
+    }
+
+    .search-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 0;
+    }
+
+    .search-thumb {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .search-name {
+      font-size: 14px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .search-name:hover {
+      text-decoration: underline;
+    }
+  </style>
+
     <script src="{{ asset('assets/js/theme.js')}}"></script>
     @stack("scripts")
     @stack("scripts")

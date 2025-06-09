@@ -51,7 +51,7 @@
                         </div>
                         <div class="text-center mt-2">
                             <a class="text-decoration-none" href="{{ route('register') }}">
-                                Have account? Login in here
+                               Don't have an account? Register here
                             </a>
                         </div
 

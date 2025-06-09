@@ -170,7 +170,7 @@
                     @error('quantity') <span class="alert alert-danger text-center">{{$message}}@enderror
                 </div>
 
-                {{-- <div class="cols gap22">
+                <div class="cols gap22">
                         <fieldset class="name">
                             <div class="body-title mb-10">Size <span class="tf-color-1">*</span></div>
                             <div class="select mb-10">
@@ -191,7 +191,7 @@
                                     </a>
                                 </div>
                             </fieldset>
-                 </div> --}}
+                 </div>
 
                 <div class="cols gap22">
                     <fieldset class="name">
